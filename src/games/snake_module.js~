@@ -18,10 +18,15 @@ const newGame = () => ({
   count: 0,
 });
 
-function rand(max) {
-    return Math.floor(Math.random() * max);
-}
-export { newGame, rand };
+function includes(pos, snake) {
+    snake.forEach(function(element) {
+	if(element[0] === position[0] && element[1] === position[1]) {
+	    return true;
+	}
+	})
+    }
+	
+export { newGame };
 
 /* board objects
 const roundTime = 15;
@@ -80,7 +85,7 @@ const roundTime = 15;
   }
 
   rand() {
-
+  	return Math.floor(Math.random() * this.dimension);
   }
 
   placeFood() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { newGame, rand } from './snake_module';
+import { newGame } from './snake_module';
 import './Snake.css';
 
 class Snake extends Component {
@@ -9,21 +9,16 @@ class Snake extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.reverseSnake = this.reverseSnake.bind(this);
     this.makeNextMove = this.makeNextMove.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.placeFood = this.placeFood.bind(this);
-    this.to = this.to.bind(this);
   }
-    componentDidMount() {
-	this.placeFood();
-	this.makeNextMove();
-    }
 
   reverseSnake() {
     let newPosition = [];
     this.state.position.forEach(function(element) {
       newPosition.unshift(element);
     })
-    this.setState({ position: newPosition })
+    this.setState({
+      position: newPosition,
+    })
   }
 
   makeNextMove() {
@@ -54,51 +49,30 @@ class Snake extends Component {
       })
     }
     // if the snake hits a dot, check if it is part of the snake
-    else if(this.state.grid[position[0]][position[1]]) {
-	let obj = this;
+    else if(includes(position, this.state.position)) {
       this.state.position.forEach(function(element) {
         if(element[0] === position[0] && element[1] === position[1]) {
-	    obj.setState({ gameInProgress: false })
+          this.setState({ gameInProgress: false })
         }
       });
 
       if(this.state.gameInProgress) {
 	  let newSnake = this.state.position;
 	  newSnake.unshift(position);
-	  this.setState((prev) => { 
-	      return {
-		  position: newSnake,
-		  speed: prev.speed,
-		  count: prev.count + 1,
-	      }
-	  });
+	  this.setState({ position: newSnake });
+	  this.makeNextMove();
 	  this.placeFood();
+	  this.speed *= 0.9;
+	  ++this.count;
+	  score(this.count);
       }
     }
     else {
 	let newSnake = this.state.position;
-	this.toggle(newSnake.pop());
+	newSnake.pop();
 	newSnake.unshift(position);
-	this.toggle(position);
-    }
-    if(this.state.gameInProgress) {
-	setTimeout(() => this.makeNextMove(), this.state.speed);
     }
 }
-
-    placeFood() {
-	let pos = [rand(40), rand(40)];
-	while(this.state.grid[pos[0]][pos[1]]) {
-       	    pos = [rand(40), rand(40)];
-	}
-	this.toggle(pos);
-    }
-
-    toggle(position) {
-	let grid = this.state.grid;
-	grid[position[0]][position[1]] = !grid[position[0]][position[1]];
-	this.setState({ grid: grid });
-    }
 
   handleKeyDown(e) {
     switch(e.keyCode) {
@@ -130,18 +104,12 @@ class Snake extends Component {
   }
 
   render() {
-      let gridElement = [];
-      for(let row = 0; row < this.state.dimension; ++row) {
-	  for(let col = 0; col < this.state.dimension; ++col) {
-	      gridElement.push(<li key={`${row},${col}`} className={this.state.grid[row][col] ? "filled" : undefined} />);
-	  }
-      }
-      return (
-	  <div className="snake"
-	  onKeyDown={this.handleKeyDown}
-	  tabIndex="0">
-	      {gridElement}
-	  </div>
+    return (
+      <div className="Snake"
+           onKeyDown={this.handleKeyDown}
+           tabIndex="0">
+        Hi
+      </div>
     );
   }
 }
