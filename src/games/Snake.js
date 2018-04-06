@@ -24,15 +24,14 @@ class Snake extends Component {
     }
     
     reset() {
-	// need to figure this out
-	this.setState( newGame() ).then(() => {
+	// use callback function to force sync
+	this.setState( newGame(), () => {
 	    this.placeFood();
        	    this.tickID = setInterval(
 		() => this.tick(),
-		1000
-	    );
+		1000);
 	    this.makeNextMove();
-	    }).bind(this);
+	    });
     }
     tick() {
 	if(!this.state.gameInProgress) {
@@ -166,12 +165,14 @@ class Snake extends Component {
 	  }
       }
       return (
-	  <div className="snakeWrapper">
+	  <div className="snake-wrapper">
+	  <div className="snake-header">
 	      {`${this.state.count} points`}
 	  <Clock seconds={this.state.time} />
 	      {!this.state.gameInProgress &&
 	          <button onClick={this.reset}>New Game?</button>
 	      }
+	  </div>
 	  <div className="snake"
 	  onKeyDown={this.handleKeyDown}
 	  tabIndex="0">
