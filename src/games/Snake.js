@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { newGame, rand } from './snake_module';
 import './Snake.css';
 
 class Snake extends Component {
@@ -12,10 +11,40 @@ class Snake extends Component {
     this.toggle = this.toggle.bind(this);
     this.placeFood = this.placeFood.bind(this);
     this.to = this.to.bind(this);
+    this.tick = this.tick.bind(this);
+    this.reset = this.reset.bind(this);
   }
     componentDidMount() {
 	this.placeFood();
+	this.tickID = setInterval(
+	    () => this.tick(),
+	    1000
+	);
 	this.makeNextMove();
+    }
+    
+    reset() {
+	// need to figure this out
+	this.setState( newGame() ).then(() => {
+	    this.placeFood();
+       	    this.tickID = setInterval(
+		() => this.tick(),
+		1000
+	    );
+	    this.makeNextMove();
+	    }).bind(this);
+    }
+    tick() {
+	if(!this.state.gameInProgress) {
+	    clearInterval(this.tickID);
+	    return;
+	}
+	this.setState((prev) => {
+		      return { time: prev.time + 1 };
+	    });
+    }
+    componentWillUnmount() {
+	clearInterval(this.tickID);
     }
 
   reverseSnake() {
@@ -68,7 +97,7 @@ class Snake extends Component {
 	  this.setState((prev) => { 
 	      return {
 		  position: newSnake,
-		  speed: prev.speed,
+		  speed: prev.speed * 0.8,
 		  count: prev.count + 1,
 	      }
 	  });
@@ -137,13 +166,57 @@ class Snake extends Component {
 	  }
       }
       return (
+	  <div className="snakeWrapper">
+	      {`${this.state.count} points`}
+	  <Clock seconds={this.state.time} />
+	      {!this.state.gameInProgress &&
+	          <button onClick={this.reset}>New Game?</button>
+	      }
 	  <div className="snake"
 	  onKeyDown={this.handleKeyDown}
 	  tabIndex="0">
 	      {gridElement}
 	  </div>
+
+	  </div>
     );
   }
 }
 
+function Clock(props) {
+    const sec = props.seconds % 60;
+    const paddedSec = sec < 10 ? `0${sec}` : sec;
+    const min = (props.seconds - sec) / 60;
+    return (
+	<div className="clock">
+	    {`${min}:${paddedSec}`}
+	</div>
+	)
+}
+function newGrid(dimension) {
+  let grid = [];
+  for(let i = 0; i < dimension; ++i) {
+    grid.push(new Array(dimension).fill(false));
+  }
+  const center = Math.floor(dimension / 2);
+  grid[center][center] = true;
+  return grid;
+}
+
+function newGame() {
+    return {
+    position: [[20, 20]],
+    grid: newGrid(40),
+    dimension: 40,
+    direction: 'r',
+    gameInProgress: true,
+    speed: 150,
+    count: 0,
+    time: 0,
+    }
+}
+
+function rand(max) {
+    return Math.floor(Math.random() * max);
+}
 export default Snake;

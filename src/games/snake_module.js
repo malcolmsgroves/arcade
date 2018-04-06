@@ -1,27 +1,4 @@
-function newGrid(dimension) {
-  let grid = [];
-  for(let i = 0; i < dimension; ++i) {
-    grid.push(new Array(dimension).fill(false));
-  }
-  const center = Math.floor(dimension / 2);
-  grid[center][center] = true;
-  return grid;
-}
 
-const newGame = () => ({
-  position: [[20, 20]],
-  grid: newGrid(40),
-  dimension: 40,
-  direction: 'r',
-  gameInProgress: true,
-  speed: 150,
-  count: 0,
-});
-
-function rand(max) {
-    return Math.floor(Math.random() * max);
-}
-export { newGame, rand };
 
 /* board objects
 const roundTime = 15;
