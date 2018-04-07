@@ -1,4 +1,32 @@
+function newGrid(dimension) {
+  let grid = [];
+  for(let i = 0; i < dimension; ++i) {
+    grid.push(new Array(dimension).fill(false));
+  }
+  const center = Math.floor(dimension / 2);
+  grid[center][center] = true;
+  return grid;
+}
 
+const newGame = () => ({
+  position: [[20, 20]],
+  grid: newGrid(40),
+  dimension: 40,
+  direction: 'r',
+  gameInProgress: true,
+  speed: 150,
+  count: 0,
+});
+
+function includes(pos, snake) {
+    snake.forEach(function(element) {
+	if(element[0] === position[0] && element[1] === position[1]) {
+	    return true;
+	}
+	})
+    }
+	
+export { newGame };
 
 /* board objects
 const roundTime = 15;
@@ -57,7 +85,7 @@ const roundTime = 15;
   }
 
   rand() {
-
+  	return Math.floor(Math.random() * this.dimension);
   }
 
   placeFood() {
