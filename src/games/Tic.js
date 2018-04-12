@@ -15,11 +15,11 @@ class Tic extends Component {
 	    const turn = this.state.turn;
 	    newBoard[row][col] = this.state.turn;
 	    this.setState((prev) => {
-		return {
+		    return {
 		    board: newBoard,
 		    turn: prev.turn === 'X' ? 'O' : 'X'
-		};
-	    });
+		    };
+		});
 	    this.isWin(row, col, turn);
 	}
     };
@@ -56,21 +56,21 @@ class Tic extends Component {
 
     render() {
 	let boardElement = this.state.board.map((row, r) => {
-	    let rowElement = row.map((square, c) => {
-		return ( 
-		    <li
-		    key={c}
-		    className="square"
-		    onClick={() => this.move(r, c)}>
-			{square}
-		    </li>
-		); });
-            return <div key={r} className="row">{ rowElement }</div>;
-	});
+		let rowElement = row.map((square, c) => {
+			return ( 
+			    <li
+			    key={c}
+			    className="square"
+			    onClick={() => this.move(r, c)}>
+			    {square}
+			    </li>
+			    ); });
+		return <div key={r} className="row">{ rowElement }</div>;
+	    });
 	return (
-		<div className="tic">
-		<div className="header">{this.state.winner ? `${this.state.winner} wins!` : null}</div>
-	    { boardElement }
+	    <div className="tic">
+	    <div className="header">{this.state.winner ? `${this.state.winner} wins!` : null}</div>
+		{ boardElement }
 	    </div>);
 	
     }
@@ -84,13 +84,13 @@ function newGame() {
 	[null, null, null],
 	[null, null, null],
 	[null, null, null]
-    ];
+	];
     
     return {
-        board: board,
-	turn: 'X',
-	winner: null
-    };
+    board: board,
+	    turn: 'X',
+	    winner: null
+	    };
 }
 
 export default Tic;

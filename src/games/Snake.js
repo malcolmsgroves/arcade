@@ -81,14 +81,14 @@ class Snake extends Component {
 	   position[1] < 0) {
 	    this.setState({
 		gameInProgress: false,
-	    })
+	    });
 	}
 	// if the snake hits a dot, check if it is part of the snake
 	else if(this.state.grid[position[0]][position[1]]) {
 	    let obj = this;
 	    this.state.position.forEach(function(element) {
 		if(element[0] === position[0] && element[1] === position[1]) {
-		    obj.setState({ gameInProgress: false })
+		    obj.setState({ gameInProgress: false });
 		}
 	    });
 
@@ -100,7 +100,7 @@ class Snake extends Component {
 			position: newSnake,
 			speed: prev.speed * 0.8,
 			count: prev.count + 1,
-		    }
+		    };
 		});
 		this.placeFood();
 	    }
