@@ -1,0 +1,13 @@
+div.minesweeper {
+    width: 400px;
+    overflow: auto;
+    margin: 40px auto;
+}
+
+div.square {
+    width: 10px;
+    height: 10px;
+    float: left;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
